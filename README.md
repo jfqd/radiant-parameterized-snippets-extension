@@ -29,7 +29,7 @@ And lions? What do lions do?
 
 In snippet 'animal_info':
 
-```
+```xml
 <r:unless_var name="animal">
   What animal do you want info about?
   Please set the 'animal' parameter when calling this snippet!
@@ -48,4 +48,4 @@ In snippet 'animal_info':
   Enimal? Is there an enimal? If yes, tell me what it is, 
   if no, don't you dare returning an error message! <r:var name="enimal" missing="ignore" />
 </r:if_var>
-````    
+```  
