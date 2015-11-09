@@ -40,10 +40,11 @@ module ParameterizedSnippets
     desc %{
       Outputs the value of the parameter.
       If the value cannot be found, an error message or, if you use the 'missing' parameter, nothing is shown.
+      If the value is missing and a fallback is given, than the fallback value will be shown.
       
       *Usage:*
 
-      <pre><code><r:var name="parameter_name" [missing="ignore"] /></code></pre>
+      <pre><code><r:var name="parameter_name" [missing="ignore"] [fallback="fallback-output"] /></code></pre>
       
       *Example:*
       
@@ -54,14 +55,18 @@ module ParameterizedSnippets
       animal_info snippet:
       
       <pre><code><r:var name="animal" /> # Outputs 'elephant'
-      <r:var name="enimal" missing="ignore" /> # Outputs nothing</code></pre>
+      <r:var name="enimal" missing="ignore" /> # Outputs nothing</code>
+      <r:var name="enimal" fallback="not found" /> # Outputs: not found</code></pre>
     }
     tag 'snippet:var' do |tag|
       ignore_missing = tag.attr['missing'] == 'ignore'
+      fallback = tag.attr['fallback']
       var = check_for_attr(tag, 'name')
       tag_binding = get_snippet_tag_binding(tag)
-      if tag_binding && tag_binding.attr[var]
+      if (tag_binding && tag_binding.attr[var])
         tag_binding.attr[var]
+      elsif fallback.present?
+        h(fallback)
       else
         ignore_missing ? '' : "Could not find parameter '#{var}' in snippet '#{tag_binding.attributes['name']}'."
       end
